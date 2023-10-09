@@ -131,9 +131,9 @@ int http_server_authenticate(struct http_instance * const inst) {
             return 0;
         }
 
-        printf("0x%x", result);
+        printf("Bytes Read: 0x%x\n", result);
 
-        result = AcceptSecurityContext(&inst->credentials->handle, NULL, &description_in, ASC_REQ_ALLOCATE_MEMORY | ASC_REQ_CONFIDENTIALITY | ASC_REQ_EXTENDED_ERROR, 0, context, &description_out, &attributes, &lifetime);
+        result = AcceptSecurityContext(&inst->credentials->handle, context, &description_in, ASC_REQ_ALLOCATE_MEMORY | ASC_REQ_CONFIDENTIALITY | ASC_REQ_EXTENDED_ERROR, 0, context, &description_out, &attributes, &lifetime);
 
         if (result == SEC_I_COMPLETE_AND_CONTINUE ||
              result == SEC_I_COMPLETE_NEEDED ||
@@ -169,8 +169,7 @@ int http_server_authenticate(struct http_instance * const inst) {
         } else if(result == SEC_E_INCOMPLETE_MESSAGE) {
             /* Do nothing, we do not have enough of the packet to continue */
         } else {
-            DEBUG_LOG("Unknown error");
-            printf("0x%x\n", result);
+            printf("Unknown Error: 0x%x\n", result);
             return 0;
         }
     }
