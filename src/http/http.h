@@ -20,29 +20,9 @@
 #define DEBUG_LOG(T)
 #endif
 
-typedef struct http_credentials {
-    PCCERT_CONTEXT context;
-    CREDHANDLE handle;
-    TIMESTAMP expiry;
-} HTTP_CREDENTIALS;
-
-typedef struct http_instance {
-    char *port;
-    char *address;
-    int   queue;
-
-    SOCKET listener;
-    SOCKET reciever;
-    HTTP_CREDENTIALS *credentials;
-} HTTP_INSTANCE;
-int http_server_initialize(struct http_instance * const inst);
-int http_server_listen(struct http_instance * const inst);
-int http_server_accept(struct http_instance * const inst);
-int http_server_authenticate(struct http_instance * const inst);
-
 typedef struct http_certificate {
-    char *name;
     char *location;
+    char *subject;
     char *issuer;
 } HTTP_CERTIFICATE;
 
@@ -59,5 +39,27 @@ typedef struct http_blob {
     void *data;
     long  length;
 } HTTP_BLOB;
+
+typedef struct http_credentials {
+    PCCERT_CONTEXT context;
+    CREDHANDLE handle;
+    TIMESTAMP expiry;
+} HTTP_CREDENTIALS;
+
+typedef struct http_instance {
+    char *port;
+    char *address;
+    int   queue;
+
+    SOCKET listener;
+    SOCKET reciever;
+    HTTP_CREDENTIALS *credentials;
+} HTTP_INSTANCE;
+
+int http_server_initialize(struct http_instance * const inst);
+int http_server_listen(struct http_instance * const inst);
+int http_server_accept(struct http_instance * const inst);
+int http_server_authenticate(struct http_instance * const inst);
+int http_certificate_initialize(struct http_instance * const inst, struct http_certificate * const cred);
 
 #endif
