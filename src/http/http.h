@@ -12,14 +12,6 @@
 #include <sspi.h>
 #include <schannel.h>
 
-#define DEBUG
-#if defined(DEBUG)
-#include <stdio.h>
-#define DEBUG_LOG(T) printf("[%i:%s()]: %s\n", __LINE__, __FUNCTION__, T)
-#else
-#define DEBUG_LOG(T)
-#endif
-
 typedef struct http_certificate {
     char *location;
     char *subject;
