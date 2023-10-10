@@ -1,5 +1,8 @@
 @ECHO OFF
 	SETLOCAL
+		MKDIR bin\int
+		MKDIR bin\out
+
 		SET CFLAGS=-pthread -lpthread -I./src
 		SET CLIBS=-lwininet -lws2_32 -lsecur32 -lcrypt32
 

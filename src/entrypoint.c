@@ -35,11 +35,13 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
+	printf("Server initialized\n");
 	while (TRUE) {
 		if (http_server_listen(&server) == 0) {
 			return 0;
 		}
 
+		printf("Waiting for a connection...\n");
 		if (http_server_accept(&server) == 0) {
 			return 0;
 		}
