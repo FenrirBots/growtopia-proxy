@@ -23,6 +23,10 @@ int main(int argc, char **argv) {
 	cert.subject = "growtopia1.com";
 	cert.issuer = "growtopia1.com";
 
+	/* Something simple to show that the application is running (Stole this from yuhkil)*/
+	printf("Anubis Proxy 1.0.0 (tags/v1.0.0:beta)\n");
+  	printf("Type 'help', 'copyright', 'credits' or 'license' for more information\n");
+
 	if (http_server_initialize(&server) == 0) {
 		return 0;
 	}
@@ -40,6 +44,7 @@ int main(int argc, char **argv) {
 			return 0;
 		}
 
+		printf("Connection recieved, Attempting to authenticate...\n");
 		if (http_server_authenticate(&server) == 0) {
 			return 0;
 		}

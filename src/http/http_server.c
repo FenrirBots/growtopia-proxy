@@ -116,11 +116,13 @@ int http_server_authenticate(struct http_instance * const inst) {
     
     while (authorized == FALSE) {
         result = recv(inst->reciever, description_in.pBuffers[0].pvBuffer, SO_MAX_MSG_SIZE, 0);
+        printf("Bytes Recieved: %i\n", result);
+
         if (result == 0) {
             return 0;
         }
 
-        result = AcceptSecurityContext(&inst->credentials->handle, context, &description_in, ASC_REQ_ALLOCATE_MEMORY | ASC_REQ_CONFIDENTIALITY | ASC_REQ_EXTENDED_ERROR, 0, context, &description_out, &attributes, &lifetime);
+        result = AcceptSecurityContext(&inst->credentials->handle, context, &description_in, ASC_REQ_ALLOCATE_MEMORY | ASC_REQ_CONFIDENTIALITY | ASC_REQ_EXTENDED_ERROR, SECURITY_NATIVE_DREP, context, &description_out, &attributes, &lifetime);
 
         if (result == SEC_E_OK) {
             authorized = TRUE;
@@ -143,6 +145,8 @@ int http_server_authenticate(struct http_instance * const inst) {
             }
         }
    }
+
+   printf("Authentication successful\n");
 
     return 1;
 }
