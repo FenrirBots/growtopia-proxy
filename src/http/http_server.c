@@ -9,7 +9,7 @@ int http_server_initialize(struct http_instance * const inst) {
 
     result = WSAStartup(MAKEWORD(2, 2), &data);
     if (result != 0) {
-        printf("[%s:%llu]: WSAStartup error (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
+        printf("[%s:%llu]: WSAStartup error (0x%x)\n", __LINE__, __FILE__, result);
         return 0;
     }
 
