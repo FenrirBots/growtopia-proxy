@@ -4,7 +4,7 @@
 		MKDIR bin\out
 
 		SET CFLAGS=-pthread -lpthread -I./src
-		SET CLIBS=-lwininet -lws2_32 -lsecur32 -lcrypt32
+		SET CLIBS=-lwininet -lws2_32 -lsecur32 -lcrypt32 -lbcrypt -lncrypt
 
 		:: Server Data
 		@REM GCC %CFLAGS% -c -std=c99 src/tests/server_data.c -o bin/int/tests/server_data.o
