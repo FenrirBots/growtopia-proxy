@@ -7,7 +7,6 @@ int http_server_initialize(struct http_instance * const inst) {
     ADDRINFO *addr;
     WSADATA data;
 
-    printf("WSAStartup\n");
     result = WSAStartup(MAKEWORD(2, 2), &data);
     if (result != 0) {
         printf("[%s:%llu]: WSAStartup error (0x%x)\n", __LINE__, __FILE__, result);
@@ -23,14 +22,12 @@ int http_server_initialize(struct http_instance * const inst) {
     hint.ai_protocol  = IPPROTO_TCP;
     hint.ai_socktype  = SOCK_STREAM;
 
-    printf("GetAddrInfo\n");
     result = getaddrinfo(inst->address, inst->port, &hint, &addr);
     if (result != 0) {
-        printf("[%s:%llu]: An error occoured while creating the socket (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
+        printf("[%s:%llu]: An error occoured while getting the address information (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
         return 0;
     }
 
-    printf("Socket\n");
     inst->listener = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
     if (inst->listener == INVALID_SOCKET) {
         printf("[%s:%llu]: An error occoured while creating the socket (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
@@ -38,16 +35,15 @@ int http_server_initialize(struct http_instance * const inst) {
         return 0;
     }
 
-    printf("Bind\n");
+    /* This will throw an ACCESS_VIOLATION if the requested port is in use, this needs to be fixed */
     result = bind(inst->listener, addr->ai_addr, addr->ai_addrlen);
     if (result != 0) {
-        printf("[%s:%llu]: An error occoured while creating the socket (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
+        printf("[%s:%llu]: An error occoured while binding the port (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
         freeaddrinfo(addr);
         closesocket(inst->listener);
         return 0;
     }
     
-    printf("FreeAddrInfo\n");
     freeaddrinfo(addr);
     return 1;
 }
