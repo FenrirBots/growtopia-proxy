@@ -9,6 +9,7 @@ int http_server_initialize(struct http_instance * const inst) {
 
     result = WSAStartup(MAKEWORD(2, 2), &data);
     if (result != 0) {
+        printf("[%s:%llu]: WSAStartup error (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
         return 0;
     }
 
@@ -24,17 +25,20 @@ int http_server_initialize(struct http_instance * const inst) {
 
     result = getaddrinfo(inst->address, inst->port, &hint, &addr);
     if (result != 0) {
+        printf("[%s:%llu]: An error occoured while creating the socket (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
         return 0;
     }
 
     inst->listener = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
     if (inst->listener == INVALID_SOCKET) {
+        printf("[%s:%llu]: An error occoured while creating the socket (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
         freeaddrinfo(addr);
         return 0;
     }
 
     result = bind(inst->listener, addr->ai_addr, addr->ai_addrlen);
     if (result != 0) {
+        printf("[%s:%llu]: An error occoured while creating the socket (0x%x)\n", __LINE__, __FILE__, WSAGetLastError());
         freeaddrinfo(addr);
         closesocket(inst->listener);
         return 0;
@@ -79,7 +83,7 @@ int http_server_accept(struct http_instance * const inst) {
 
 int http_server_authenticate(struct http_instance * const inst) {
     PCtxtHandle   context = NULL;
-    CHAR         *description_in_token[SO_MAX_MSG_SIZE];
+    CHAR        **description_in_token;
     SecBuffer     description_in_buffers[2];
     SecBufferDesc description_in;
     SecBuffer     description_out_buffers[3];
@@ -90,6 +94,11 @@ int http_server_authenticate(struct http_instance * const inst) {
     long          sent;
     BOOL          authorized = FALSE;
     BOOL          first = TRUE;
+
+    description_in_token = malloc(sizeof(CHAR) * SO_MAX_MSG_SIZE);
+    while (authorized == FALSE) {
+        description_in_token = description_in_token + sent;
+    }
 
     if (inst == NULL ||
         inst->credentials == NULL ||
@@ -123,6 +132,7 @@ int http_server_authenticate(struct http_instance * const inst) {
         }
 
         result = AcceptSecurityContext(&inst->credentials->handle, context, &description_in, ASC_REQ_ALLOCATE_MEMORY | ASC_REQ_CONFIDENTIALITY | ASC_REQ_EXTENDED_ERROR, SECURITY_NATIVE_DREP, context, &description_out, &attributes, &lifetime);
+        printf("0x%x", result);
 
         if (result == SEC_E_OK) {
             authorized = TRUE;
