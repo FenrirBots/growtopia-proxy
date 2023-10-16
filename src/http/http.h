@@ -18,15 +18,6 @@ typedef struct http_certificate {
     char *issuer;
 } HTTP_CERTIFICATE;
 
-typedef struct http_certificate_file {
-    char *location;
-} HTTP_CERTIFICATE_FILE;
-
-typedef struct http_certificate_resource {
-    long public;
-    long private;
-} HTTP_CERTIFICATE_RESOURCE;
-
 typedef struct http_blob {
     void *data;
     long  length;
