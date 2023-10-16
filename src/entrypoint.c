@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
 	struct http_instance server;
 	struct http_certificate cert;
 
-	server.port = "443";
-	server.address = "127.0.0.1";
+	server.port = "443\n";
+	server.address = "127.0.0.1\n";
 	server.queue = 1;
 	cert.location = "My";
 	cert.subject = "growtopia1.com";
