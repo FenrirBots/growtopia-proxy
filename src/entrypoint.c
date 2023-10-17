@@ -3,7 +3,6 @@
 
 #include "log.h"
 #include "http/http.h"
-#include "../res/resource.h"
 
 /* DONE: Remove the DEBUG_LOG function and replace with a more neuteral function like printf_log which has optional debugging features */
 /* TODO: Add macros for log functions (ie. log_error, log_warning, log_message) and improve logging */
