@@ -1,5 +1,0 @@
-#include <windows.h>
-#include "resource.h"
-
-GROWTOPIA_CERT_CRT RCDATA "growtopia_certificate.crt"
-GROWTOPIA_CERT_PEM RCDATA "growtopia_certificate.pem"
